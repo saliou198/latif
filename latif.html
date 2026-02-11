@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mission Saint Valentin 💘</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial;
+    background: linear-gradient(135deg,#ff758c,#ff7eb3);
+    color:white;
+    text-align:center;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+button{
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    margin:10px;
+    transition:0.3s;
+}
+
+#yes{
+    background:#ff2e63;
+}
+
+#no{
+    background:#222;
+    position:absolute;
+}
+
+.progress{
+    width:300px;
+    height:20px;
+    background:white;
+    border-radius:20px;
+    margin-top:20px;
+    overflow:hidden;
+}
+
+.bar{
+    height:100%;
+    width:0%;
+    background:#ff2e63;
+}
+
+.heart{
+    position:fixed;
+    font-size:24px;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    from{transform:translateY(-10vh)}
+    to{transform:translateY(110vh)}
+}
+
+</style>
+</head>
+
+<body>
+
+<h1 id="title">💘 Chargement de l'opération Valentine...</h1>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+<div id="content"></div>
+
+<audio id="music" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">
+</audio>
+
+<script>
+
+let bar = document.getElementById("bar");
+let content = document.getElementById("content");
+
+let progress = 0;
+
+// Barre progression fake
+let load = setInterval(()=>{
+    progress += 2;
+    bar.style.width = progress + "%";
+
+    if(progress >= 100){
+        clearInterval(load);
+        startStory();
+    }
+},50);
+
+
+// ================= INTRO =================
+function startStory(){
+
+let name = prompt("Entre ton prénom 💕");
+
+document.getElementById("title").innerHTML =
+`Bonjour ${name || ""}... j'ai une question très importante 😌`;
+
+setTimeout(()=>{
+quiz(name);
+},2000);
+
+}
+
+
+// ================= QUIZ =================
+function quiz(name){
+
+document.getElementById("title").innerHTML =
+"Test de compatibilité amoureux 💘";
+
+content.innerHTML = `
+<p>Qui est le plus cool ?</p>
+<button onclick="correct()">Moi évidemment 😎</button>
+<button onclick="correct()">Toujours moi 😌</button>
+`;
+
+}
+
+
+function correct(){
+document.getElementById("title").innerHTML =
+"Résultat : compatibilité 1000% validée ✅";
+
+setTimeout(()=>{
+proposal();
+},1500);
+}
+
+
+// ================= DEMANDE =================
+function proposal(){
+
+document.getElementById("title").innerHTML =
+"Maintenant la vraie question...";
+
+content.innerHTML = `
+<h2>Veux-tu être ma Valentine ? 💖</h2>
+<button id="yes">Oui 💘</button>
+<button id="no">Non 😏</button>
+`;
+
+let noBtn = document.getElementById("no");
+let yesBtn = document.getElementById("yes");
+
+let yesSize = 1;
+let noSize = 1;
+
+// phrases troll
+let phrases = [
+"Refuser est illégal ici 🚨",
+"Le bouton non est en congé 😴",
+"Erreur système : choix invalide",
+"Le destin insiste fort là 😭"
+];
+
+noBtn.addEventListener("mouseover", ()=>{
+
+let x = Math.random() * (window.innerWidth - 100);
+let y = Math.random() * (window.innerHeight - 100);
+
+noBtn.style.left = x+"px";
+noBtn.style.top = y+"px";
+
+noSize -= 0.1;
+yesSize += 0.1;
+
+noBtn.style.transform = `scale(${noSize})`;
+yesBtn.style.transform = `scale(${yesSize})`;
+
+document.getElementById("title").innerHTML =
+phrases[Math.floor(Math.random()*phrases.length)];
+
+});
+
+yesBtn.onclick = finish;
+
+}
+
+
+// ================= FIN =================
+function finish(){
+
+document.getElementById("music").play();
+
+document.body.innerHTML = `
+<h1>💘 Mission réussie 💘</h1>
+<h2>Tu viens officiellement d'entrer dans mon lore romantique 😌</h2>
+`;
+
+setInterval(createHeart,200);
+
+}
+
+
+// ================= COEURS =================
+function createHeart(){
+
+let heart = document.createElement("div");
+heart.classList.add("heart");
+heart.innerHTML="❤️";
+
+heart.style.left=Math.random()*100+"vw";
+heart.style.animationDuration=(Math.random()*3+2)+"s";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>heart.remove(),5000);
+}
+
+</script>
+
+</body>
+</html>
